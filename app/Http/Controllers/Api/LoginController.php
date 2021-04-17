@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
-use Tymon\JWTAuth\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -75,6 +72,4 @@ class LoginController extends Controller
             'expires_in' => Auth::factory()->getTTL() * 60
         ]);
     }
-
-    //
 }

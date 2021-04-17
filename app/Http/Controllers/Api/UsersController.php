@@ -8,6 +8,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Users\AddUserRequest;
+use App\Http\Requests\Users\UpdateUserRequest;
+use App\Http\Requests\Users\GetUsersRequest;
 
 class UsersController extends Controller
 {
@@ -17,16 +20,11 @@ class UsersController extends Controller
      * This method lists 1 or 'n' users. You can add filters in search
      * @return Response
      */
-    public function index(Request $request)
+    public function index(GetUsersRequest $request)
     {
-        //Validate request
-        $this->validate($request, [
-            'items_per_page' => 'numeric|min:1|max:100',
-        ]);
-        //get users with filters
         $users = User::filters($request);
-        //check if query of number of pages
-        if(isset($request->items_per_page))
+
+        if (isset($request->items_per_page))
             return $users->paginate($request->items_per_page);
 
         return $users->paginate(20);
@@ -39,26 +37,19 @@ class UsersController extends Controller
      * This method create a new user
      * @return Response
      */
-    public function add(Request $request)
+    public function add(AddUserRequest $request)
     {
-        //Validate request
-        $this->validate($request, [
-            'name' => 'required|string|max:50',
-            'email' => 'required|email|max:50|unique:users,email,NULL,id,deleted_at,NULL',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-        //Create user
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'id_user_created' => Auth::id()
         ]);
-        //check user creation
-        if(isset($user->id))
-            return response()->json(['message' => 'User created', 'user' => $user], 200);
+
+        if (isset($user->id))
+            return response()->json(['message' => 'Usuário criado', 'user' => $user], 200);
         else
-            return response()->json(['error' => 'User Creation not permitted'], 401);
+            return response()->json(['error' => 'Criação de usuário não permitida'], 401);
     }
 
     /**
@@ -69,30 +60,23 @@ class UsersController extends Controller
      * @param  string  $id
      * @return Response
      */
-    public function update(Request $request, $id_user)
+    public function update(UpdateUserRequest $request, $id_user)
     {
-        //Validate request
-        $this->validate($request, [
-            'name' => 'required|string|max:50',
-            'email' => 'required|email|max:50|unique:users,email,'.$id_user.',id,deleted_at,NULL',
-            'password' => 'confirmed|nullable|min:6',
-        ]);
-        //Find user
         $user = User::find($id_user);
-        //check user found
-        if(!isset($user->id))
-            return response()->json(['error' => 'User not found'], 404);
 
-        //retrieving data
+        if(!isset($user->id))
+            return response()->json(['error' => 'Usuário não encontrado'], 404);
+
         $request_user_data = $request->only(['name', 'email', 'password']);
         $request_user_data['id_user_updated'] = Auth::id();
-        //Hashing password
-        $request_user_data['password'] = Hash::make($request->password);
-        //updates user, and check changes
-        if($user->update($request_user_data))
-            return response()->json(['message' => 'User updated', 'user' => $user], 200);
+
+        if (!empty($request_user_data['password']))
+            $request_user_data['password'] = Hash::make($request->password);
+
+        if ($user->update($request_user_data))
+            return response()->json(['message' => 'Usuário atualizado', 'user' => $user], 200);
         else
-            return response()->json(['error' => 'User update not permitted'], 401);
+            return response()->json(['error' => 'Atualização de usuário não permitida'], 401);
     }
 
     /**
@@ -105,15 +89,14 @@ class UsersController extends Controller
      */
     public function delete(Request $request, $id_user)
     {
-        //Find user
         $user = User::find($id_user);
-        //check user found
-        if(!isset($user->id))
-            return response()->json(['error' => 'User not found'], 404);
-        //updates user, and check changes
-        if($user->update(['deleted_at' => Carbon::now(), 'id_user_deleted' => Auth::id()]))
-            return response()->json(['message' => 'User deleted'], 200);
+
+        if (!isset($user->id))
+            return response()->json(['error' => 'Usuário não encontrado'], 404);
+
+        if ($user->update(['deleted_at' => Carbon::now(), 'id_user_deleted' => Auth::id()]))
+            return response()->json(['message' => 'Usuário Deletado'], 200);
         else
-            return response()->json(['error' => 'User delete not permitted'], 401);
+            return response()->json(['error' => 'Não é permitido deletar este usuário'], 401);
     }
 }

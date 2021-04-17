@@ -2,14 +2,14 @@
 
 namespace App\Models;
 use Illuminate\Http\Request;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Orders extends Model
 {
-    use SoftDeletes;
     protected $table = 'orders';
+
+    protected $primaryKey = 'id';
 
     /**
      * The attributes that are mass assignable.
@@ -37,8 +37,6 @@ class Orders extends Model
         if ($request->product_id) {
             $query->where('product_id', $request->product_id);
         }
-
-        $query->whereNull('deleted_at');
     }
 
     /**
