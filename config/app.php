@@ -174,6 +174,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        //Do not run Telescope provider here, should be use on a separted file
+        //App\Providers\TelescopeServiceProvider::class,
 
     ],
 
