@@ -3,16 +3,14 @@
 namespace App\Models;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Auth\Authenticatable;
 use Laravel\Lumen\Auth\Authorizable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\Access\Authorizable as AuthorizableContract;
+use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Model implements AuthenticatableContract, AuthorizableContract, JWTSubject
+class User extends Authenticatable implements JWTSubject
 {
-    use Authenticatable, Authorizable, SoftDeletes;
+    use Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -29,7 +27,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'token'
+        'password'
     ];
 
     /**

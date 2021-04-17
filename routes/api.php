@@ -18,7 +18,7 @@ Route::post('/login', ['as' => 'login', 'uses' => 'Api\LoginController@login']);
 Route::get('/logout', ['as' => 'logout', 'uses' => 'Api\LoginController@logout']);
 
 //panel - authenticated routes
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'api'], function () {
     //login jwt refresh
     Route::put('/refresh', 'Api\LoginController@refresh');
     //users routes

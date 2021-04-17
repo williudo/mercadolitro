@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\LoginRequest;
+use Tymon\JWTAuth\JWTAuth;
 
 class LoginController extends Controller
 {
@@ -37,15 +39,18 @@ class LoginController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        dd(123);
 
-        $credentials = $request->only(['email', 'password']);
+        try {
+            $credentials = $request->only(['email', 'password']);
 
-        if (! $token = Auth::attempt($credentials)) {
-            return response()->json(['error' => 'Invalid user credentials'], 401);
+            if (!$token = auth()->attempt($credentials)) {
+                return response()->json(['error' => 'Invalid user credentials'], 401);
+            }
+
+            return $this->respondWithToken($token);
+        } catch (\Exception $exception) {
+            dd($exception->getMessage(), $exception->getFile(), $exception->getLine());
         }
-
-        return $this->respondWithToken($token);
     }
 
     /**

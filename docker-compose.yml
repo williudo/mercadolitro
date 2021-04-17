@@ -7,6 +7,7 @@ services:
       - "80:80"
     links:
       - fpm
+      - mysql
     volumes:
       - ./:/var/www/laravel
       - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/laravel.conf
