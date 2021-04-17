@@ -63,11 +63,18 @@ class Handler extends ExceptionHandler
             $message = 'O dados enviados são inválidos.';
         }
 
+        if (stripos($message, 'Unauthenticated.') !== false) {
+            $code = 401;
+            /** @var \Illuminate\Validation\ValidationException $e */
+            $message = 'Não autenticado.';
+        }
+
         if ($request->expectsJson()) {
             return response()->json([
                 'error' =>  $message,
-                'message' => $exception->errors(),
+                'message' => method_exists($exception, 'errors') ? $exception->errors() : null,
             ], $code);
+
         }
 
         return parent::render($request, $exception);

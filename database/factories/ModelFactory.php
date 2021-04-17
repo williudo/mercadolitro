@@ -11,6 +11,7 @@
 |
 */
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
     return [
@@ -18,7 +19,8 @@ $factory->define(App\Models\User::class, function (Faker\Generator $faker) {
         'email' => $faker->email,
         'password' => Hash::make('1qaz2wsx'),
         'created_at' => \Carbon\Carbon::now(),
-        'id_user_created' => 0
+        'id_user_created' => 0,
+        'remember_token' => Str::random(10),
     ];
 });
 

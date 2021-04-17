@@ -40,17 +40,14 @@ class LoginController extends Controller
     public function login(LoginRequest $request)
     {
 
-        try {
-            $credentials = $request->only(['email', 'password']);
+        $credentials = $request->only(['email', 'password']);
 
-            if (!$token = auth()->attempt($credentials)) {
-                return response()->json(['error' => 'Invalid user credentials'], 401);
-            }
-
-            return $this->respondWithToken($token);
-        } catch (\Exception $exception) {
-            dd($exception->getMessage(), $exception->getFile(), $exception->getLine());
+        if (!$token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Invalid user credentials'], 401);
         }
+
+        return $this->respondWithToken($token);
+
     }
 
     /**

@@ -27,7 +27,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password'
+        'password',
+        'remember_token',
     ];
 
     /**
@@ -66,4 +67,13 @@ class User extends Authenticatable implements JWTSubject
         }
         $query->whereNull('deleted_at')->orderBy('name');
     }
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }
