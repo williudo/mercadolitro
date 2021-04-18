@@ -108,4 +108,4 @@ Teste:
 ![tests](https://user-images.githubusercontent.com/14855959/73621012-307c5900-4613-11ea-9dc4-ab33ca44ee7b.png)   
 
 Coverage:
-![coverage](https://user-images.githubusercontent.com/14855959/73621012-307c5900-4613-11ea-9dc4-ab33ca44ee7b.png)
+![coverage](https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true)
