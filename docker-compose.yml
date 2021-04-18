@@ -22,7 +22,7 @@ services:
 
   mysql:
     image: mysql:5.7.29
-    command: --default-authentication-plugin=mysql_native_password --init-file /var/www/mysql/init.sql
+    command: --default-authentication-plugin=mysql_native_password --init-file /var/www/mysql/init.sql --innodb-buffer-pool-size=256M
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: root
