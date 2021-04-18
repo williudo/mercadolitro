@@ -97,6 +97,13 @@ docker-compose exec fpm php artisan test
 
 ## Teste executados e coverage
 ![tests](https://github.com/williudo/mercadolitro/blob/master/docs/tests.png?raw=true)
+
+
+Para acessar o relatório do phpunit, e ver o coverage, abra o arquivo: 
+```
+{pasta_do_projeto}/report/index.html
+```
+
 <p align="center">
   <img src="https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true">
 </p>
@@ -108,7 +115,6 @@ Para acessar o Telescope a url é:
 
 [http://mercadolitro.local/telescope](http://mercadolitro.local/telescope)   
 
-  
 <p align="center">
   <img src="https://github.com/williudo/mercadolitro/blob/master/docs/telescope.png?raw=true">
 </p>
