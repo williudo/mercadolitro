@@ -178,7 +178,6 @@ class ShowProductsTest extends TestCase
 
         //checks if found product
         $response->assertJsonFragment([
-            'total' => 1,
             'name' => 'Tecpix',
             'color' => 'grey'
         ]);
