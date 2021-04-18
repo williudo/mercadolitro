@@ -9,10 +9,10 @@ Inspirada no Mercado Livre, mas claro, muito menor, as rotas está separado em 4
 Para testar este projeto, basta seguir os tópicos a seguir:
 
 1. [`Configurar o arquivo hosts do sistema operacional`](#hosts-config)
-2. [`Docker`](https://www.docker.com/products/docker-desktop)
-2. [`Migrations e Seeders`](https://www.docker.com/products/docker-desktop)
-3. [`Documentação da API`](https://www.docker.com/products/docker-desktop)
-4. [`Testes e Debugs`](https://www.docker.com/products/docker-desktop)
+2. [`Docker`](#docker-config)
+2. [`Migrations e Seeders`](#db-config)
+3. [`Documentação da API`](#doc-config)
+4. [`Testes e Debugs`](#tests-config)
 
 
 ## <a name="hosts-config"></a> Configurar o arquivo hosts do sistema operacional
@@ -23,7 +23,7 @@ Caso não saiba como fazer, basta acessar esse link:
 
 [`https://suporte.hostgator.com.br/hc/pt-br/articles/115000391994-Como-funciona-o-arquivo-hosts-`](https://suporte.hostgator.com.br/hc/pt-br/articles/115000391994-Como-funciona-o-arquivo-hosts-)
 
-## Docker
+## <a name="docker-config"></a> Docker
 
 Nesta aplicação, há 4 containers, sendo eles:
 
@@ -37,7 +37,7 @@ Com o docker instalado, rode o commando abaixo na raiz do projeto, mas iniciar o
 docker-compose up -d --build
 ```
 
-## Migrations e Seeders:
+## <a name="db-config"></a>Migrations e Seeders:
 
 Foi criado as migrations para versionamento das tabelas do banco de dados, e seeders para popular o banco automaticamente.  
 Com isso, será possível testar todos os endepoints.   
@@ -55,7 +55,7 @@ docker exec -it <container_id> /bin/bash
 php artisan migrate
 php artisan db:seed
 ```
-## Documentação da API
+## <a name="doc-config"></a> Documentação da API
 
 Após seguir todos os passos acima, a aplicação já estará disponível em: [http://mercadolitro.local](http://mercadolitro.local)  
 As rotas que exigem autenticação, é necessário passar no header um access_token no padrão JWT. O mesmo o usuário obtém, logando em `/api/login`.
@@ -88,7 +88,7 @@ Resumo:
   - enviar pedido: `PUT` `/api/orders/ship/{id}`
   - cancelar pedido (soft delete): `DELETE` `/api/orders/cancel/{id}`
 
-## Testes e Debugs
+## <a name="tests-config"></a>Testes e Debugs
 
 Para rodar o teste, e também gerar o coverage do php unit, basta executar o comando:  
 
