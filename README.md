@@ -1,3 +1,7 @@
+<p align="center">
+  <img width="250" src="https://github.com/williudo/mercadolitro/blob/master/docs/MercadoLitroPequeno.png?raw=true">
+</p>
+
 # MercadoLitro API
 
 Neste repositório foi feito uma API em Laravel que simula um marketplace de bebidas.  
