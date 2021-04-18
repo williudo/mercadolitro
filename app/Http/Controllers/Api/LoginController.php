@@ -27,7 +27,7 @@ class LoginController extends Controller
     {
         Auth::logout();
 
-        return response()->json(['message' => 'Successfully logout']);
+        return response()->json(['message' => 'Deslogou com sucesso.']);
     }
     /**
      * Get a JWT via given credentials.
@@ -40,7 +40,7 @@ class LoginController extends Controller
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth()->attempt($credentials)) {
-            return response()->json(['error' => 'Invalid user credentials'], 401);
+            return response()->json(['error' => 'Credenciais inválidas.'], 401);
         }
 
         return $this->respondWithToken($token);

@@ -37,7 +37,7 @@ class AddUserRequest extends FormRequest
         $this->messages['email.email'] = 'Email inválido.';
         $this->messages['email.unique'] = 'Email já cadastrado';
 
-        $this->messages['password.password'] = 'Informe a senha.';
+        $this->messages['password.required'] = 'Informe a senha.';
         $this->messages['password.min'] = 'Mínimo 6 caracteres.';
         $this->messages['password.string'] = 'Formato da senha inválido.';
         $this->messages['password.confirmed'] = 'Campos password e password_confirmation estão diferentes.';

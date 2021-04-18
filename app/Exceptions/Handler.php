@@ -50,7 +50,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Throwable $exception)
     {
-        $code = $exception->getCode();
+        if (method_exists($exception, 'getStatusCode')) {
+            $code = $exception->getStatusCode();
+        }
 
         if (empty($code))
             $code = 500;
@@ -69,11 +71,17 @@ class Handler extends ExceptionHandler
             $message = 'Não autenticado.';
         }
 
+        if ($code == 404 && empty($message)) {
+            $message = 'Não encontrado.';
+        }
+
         if ($request->expectsJson()) {
-            return response()->json([
-                'error' =>  $message,
-                'message' => method_exists($exception, 'errors') ? $exception->errors() : null,
-            ], $code);
+            $response_data = ['error' => $message];
+            if (method_exists($exception, 'errors')) {
+                $response_data['message'] = $exception->errors();
+            }
+
+            return response()->json($response_data, $code);
 
         }
 

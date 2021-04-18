@@ -1,8 +1,11 @@
 <?php
 
+namespace Tests\Unit\Products;
+
 use App\Models\User;
 use App\Models\Products;
-    use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Tests\TestCase;
 
 class UpdateProductTest extends TestCase
 {
@@ -18,9 +21,10 @@ class UpdateProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
         //make request
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
+        $response = $this->json('PUT', '/api/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
+
         //checks if access is unauthorized
-        $this->assertResponseStatus(401);
+        $response->assertStatus(401);
     }
 
     /**
@@ -37,9 +41,10 @@ class UpdateProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
         //make request
-        $this->json('POST', '/users/update/', ['name'=> 'Willian Rodrigues', 'email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('PUT', '/api/products/update/');
+
         //checks if access is unauthorized
-        $this->assertResponseStatus(404);
+        $response->assertStatus(404);
     }
 
     /**
@@ -51,120 +56,13 @@ class UpdateProductTest extends TestCase
     {
         //Creates 1 ramdoms user
         $user = factory(User::class)->create();
-        //Acting as user
         $this->actingAs($user);
-        //Creates ramdom product
+
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
-        //make request
-        $this->json('POST', '/users/update/wad666668', ['name'=> 'Willian Rodrigues', 'email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('PUT', '/api/products/update/123123', ['name'=> 'TV Samsumg']);
+
         //checks if access is unauthorized
-        $this->assertResponseStatus(404);
-    }
-
-    /**
-     * Test try creates a product without pass name.
-     * Expects return a json error validation
-     * @return void
-     */
-    public function testTryUpdateWithoutName()
-    {
-        //Update a ramdom user
-        $user = factory(User::class)->create();
-        //acting as first user created
-        $this->actingAs($user);
-        //Creates ramdom product
-        $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
-
-        $this->json('POST', '/users/add', ['description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
-
-        $this->seeJson([
-            "name" => ["The name field is required."]
-        ]);
-        $this->assertResponseStatus(422);
-    }
-    /**
-     * Test try creates a product without pass description.
-     * Expects return a json error validation
-     * @return void
-     */
-    public function testTryUpdateWithoutDescription()
-    {
-        //Update a ramdom user
-        $user = factory(User::class)->create();
-        //acting as first user created
-        $this->actingAs($user);
-        //Creates ramdom product
-        $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
-
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
-
-        $this->seeJson([
-            "description" => ["The description field is required."]
-        ]);
-        $this->assertResponseStatus(422);
-    }
-    /**
-     * Test try creates a product without pass quantity.
-     * Expects return a json error validation
-     * @return void
-     */
-    public function testTryUpdateWithoutQuantity()
-    {
-        //Update a ramdom user
-        $user = factory(User::class)->create();
-        //acting as first user created
-        $this->actingAs($user);
-        //Creates ramdom product
-        $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
-
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'price' => '19584.59', 'color' => 'grey']);
-
-        $this->seeJson([
-            "quantity" => ["The quantity field is required."]
-        ]);
-        $this->assertResponseStatus(422);
-    }
-    /**
-     * Test try creates a product without pass price.
-     * Expects return a json error validation
-     * @return void
-     */
-    public function testTryUpdateWithoutPrice()
-    {
-        //Update a ramdom user
-        $user = factory(User::class)->create();
-        //acting as first user created
-        $this->actingAs($user);
-        //Creates ramdom product
-        $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
-
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'color' => 'grey']);
-
-        $this->seeJson([
-            "price" => ["The price field is required."]
-        ]);
-        $this->assertResponseStatus(422);
-    }
-    /**
-     * Test try creates a product with wrong color.
-     * Expects return a json error validation
-     * @return void
-     */
-    public function testTryUpdateWithWrongColor()
-    {
-        //Update a ramdom user
-        $user = factory(User::class)->create();
-        //acting as first user created
-        $this->actingAs($user);
-        //Creates ramdom product
-        $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
-
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => '25']);
-
-        $this->seeJson([
-            "color" => ["The selected color is invalid."]
-        ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(404);
     }
 
     /**
@@ -181,12 +79,12 @@ class UpdateProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
 
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => 'qwef', 'color' => 'red']);
+        $response = $this->json('PUT', '/api/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => 'qwef', 'color' => 'red']);
 
-        $this->seeJson([
-            "price" => ["The price must be a number."]
+        $response->assertJsonFragment([
+            "price" => ["Preço com formato inválido."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -203,12 +101,12 @@ class UpdateProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
 
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '-1', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('PUT', '/api/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '-1', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "quantity" => ["The quantity must be at least 0."]
+        $response->assertJsonFragment([
+            "quantity" => ["Números negativos não são permitidos."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -225,12 +123,12 @@ class UpdateProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
 
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix Tecpix Tecpix Tecpix Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('PUT', '/api/products/update/'.$product->id, ['name'=> 'Tecpix Tecpix Tecpix Tecpix Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "name" => ["The name may not be greater than 30 characters."]
+        $response->assertJsonFragment([
+            "name" => ["Máximo 30 caracteres."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -247,12 +145,12 @@ class UpdateProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
 
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('PUT', '/api/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "description" => ["The description may not be greater than 50 characters."]
+        $response->assertJsonFragment([
+            "description" => ["Máximo 50 caracteres."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -269,12 +167,12 @@ class UpdateProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
 
-        $this->json('POST', '/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('PUT', '/api/products/update/'.$product->id, ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "message" => 'Product updated',
+        $response->assertJsonFragment([
+            "message" => 'Produto atualizado',
             "name" => "Tecpix"
         ]);
-        $this->assertResponseStatus(200);
+        $response->assertStatus(200);
     }
 }

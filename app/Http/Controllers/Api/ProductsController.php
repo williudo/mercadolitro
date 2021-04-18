@@ -41,9 +41,9 @@ class ProductsController extends Controller
         $product = Products::create($product_data);
 
         if (isset($product->id))
-            return response()->json(['message' => 'Product created', 'product' => $product], 200);
+            return response()->json(['message' => 'Produto Criado', 'product' => $product], 200);
         else
-            return response()->json(['error' => 'Product Creation not permitted'], 401);
+            return response()->json(['error' => 'Sem permissão para criar o produto'], 401);
     }
 
     /**
@@ -59,14 +59,14 @@ class ProductsController extends Controller
         $product = Products::find($id_product);
 
         if(!isset($product->id))
-            return response()->json(['error' => 'Product not found'], 404);
+            return response()->json(['error' => 'Produto não encontrado'], 404);
 
         $product_data = array_merge($request->all(), ["id_user_updated" => Auth::id()]);
 
         if($product->update($product_data))
-            return response()->json(['message' => 'Product updated', 'product' => $product], 200);
+            return response()->json(['message' => 'Produto atualizado', 'product' => $product], 200);
         else
-            return response()->json(['error' => 'Product update not permitted'], 401);
+            return response()->json(['error' => 'Sem permissão para atualizar o produto'], 401);
     }
 
     /**
@@ -81,11 +81,11 @@ class ProductsController extends Controller
         $product = Products::find($id_product);
 
         if (!isset($product->id))
-            return response()->json(['error' => 'Product not found'], 404);
+            return response()->json(['error' => 'Produto não encontrado'], 404);
 
         if ($product->update(['deleted_at' => Carbon::now(), 'id_user_deleted' => Auth::id()]))
-            return response()->json(['message' => 'Product deleted'], 200);
+            return response()->json(['message' => 'Produto deletado.'], 200);
         else
-            return response()->json(['error' => 'Product delete not permitted'], 401);
+            return response()->json(['error' => 'Sem permissão para excluir o produto'], 401);
     }
 }

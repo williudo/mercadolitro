@@ -47,9 +47,9 @@ class UsersController extends Controller
         ]);
 
         if (isset($user->id))
-            return response()->json(['message' => 'Usuário criado', 'user' => $user], 200);
+            return response()->json(['message' => 'Usuário criado.', 'user' => $user], 200);
         else
-            return response()->json(['error' => 'Criação de usuário não permitida'], 401);
+            return response()->json(['error' => 'Criação de usuário não permitida.'], 401);
     }
 
     /**
@@ -65,7 +65,7 @@ class UsersController extends Controller
         $user = User::find($id_user);
 
         if(!isset($user->id))
-            return response()->json(['error' => 'Usuário não encontrado'], 404);
+            return response()->json(['error' => 'Usuário não encontrado.'], 404);
 
         $request_user_data = $request->only(['name', 'email', 'password']);
         $request_user_data['id_user_updated'] = Auth::id();
@@ -74,7 +74,7 @@ class UsersController extends Controller
             $request_user_data['password'] = Hash::make($request->password);
 
         if ($user->update($request_user_data))
-            return response()->json(['message' => 'Usuário atualizado', 'user' => $user], 200);
+            return response()->json(['message' => 'Usuário atualizado.', 'user' => $user], 200);
         else
             return response()->json(['error' => 'Atualização de usuário não permitida'], 401);
     }
@@ -92,10 +92,10 @@ class UsersController extends Controller
         $user = User::find($id_user);
 
         if (!isset($user->id))
-            return response()->json(['error' => 'Usuário não encontrado'], 404);
+            return response()->json(['error' => 'Usuário não encontrado.'], 404);
 
         if ($user->update(['deleted_at' => Carbon::now(), 'id_user_deleted' => Auth::id()]))
-            return response()->json(['message' => 'Usuário Deletado'], 200);
+            return response()->json(['message' => 'Usuário Deletado.'], 200);
         else
             return response()->json(['error' => 'Não é permitido deletar este usuário'], 401);
     }

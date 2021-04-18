@@ -1,12 +1,14 @@
 <?php
+namespace Tests\Unit\Products;
 
 use App\Models\User;
 use App\Models\Products;
 use Tests\TestCase;
-
+use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class DeleteProductTest extends TestCase
 {
+
     /**
      * Test try delete a product without authentication.
      * Expects return a json with 401 - unauthorized response
@@ -14,14 +16,14 @@ class DeleteProductTest extends TestCase
      */
     public function testUnauthorized()
     {
-        //Creates 1 ramdoms user
-        $users = factory(User::class)->create();
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
+
         //make request
-        $this->json('GET', '/products/delete/'.$users->id);
+        $response = $this->json('DELETE', '/api/products/delete/'.$product->id);
+
         //checks if access is unauthorized
-        $this->assertResponseStatus(401);
+        $response->assertStatus(401);
     }
 
     /**
@@ -38,9 +40,10 @@ class DeleteProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
         //make request
-        $this->json('GET', '/products/delete/');
-        //checks if access is not found
-        $this->assertResponseStatus(404);
+        $response = $this->json('DELETE', '/api/products/delete/');
+
+        //checks if access is unauthorized
+        $response->assertStatus(404);
     }
 
     /**
@@ -57,9 +60,10 @@ class DeleteProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
         //make request
-        $this->json('GET', '/products/delete/4848446');
+        $response = $this->json('DELETE', '/api/products/delete/4848446');
+
         //checks if access is not found
-        $this->assertResponseStatus(404);
+        $response->assertStatus(404);
     }
 
     /**
@@ -76,9 +80,10 @@ class DeleteProductTest extends TestCase
         //Creates ramdom product
         $product = factory(Products::class)->create(['name' => 'Perfume Hinode']);
         //make request
-        $this->json('GET', '/products/delete/'.$product->id);
+        $response = $this->json('DELETE', '/api/products/delete/'.$product->id);
+
         //checks if deleted
-        $this->assertResponseStatus(200);
-        $this->seeJson(['message' => 'Product deleted']);
+        $response->assertJson(["message" => "Produto deletado."]);
+        $response->assertStatus(200);
     }
 }

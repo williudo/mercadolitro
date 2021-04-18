@@ -14,8 +14,6 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
         DB::beginTransaction();
-        //run migrations
-        $this->artisan('migrate');
     }
 
     protected function tearDown(): void

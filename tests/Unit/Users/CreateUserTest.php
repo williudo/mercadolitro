@@ -16,9 +16,9 @@ class CreateUserTest extends TestCase
         //Creates 10 ramdoms users
         $users = factory(User::class)->create();
         //make request
-        $this->json('POST', '/users/add', ['name'=> 'Willian Rodrigues', 'email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['name'=> 'Willian Rodrigues', 'email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
         //checks if access is unauthorized
-        $this->assertResponseStatus(401);
+        $response->assertStatus(401);
     }
 
     /**
@@ -33,12 +33,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
 
-        $this->seeJson([
-            "name" => ["The name field is required."]
+        $response->assertJsonFragment([
+            "name" => ["Informe o nome de usuário."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -53,12 +53,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123456']);
 
-        $this->seeJson([
-            "email" => ["The email field is required."]
+        $response->assertJsonFragment([
+            "email" => ["Informe o email."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -73,12 +73,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian@email.com','name' => 'Willian Rodrigues', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian@email.com','name' => 'Willian Rodrigues', 'password_confirmation' => '123456']);
 
-        $this->seeJson([
-            "password" => ["The password field is required."]
+        $response->assertJsonFragment([
+            "password" => ["Informe a senha."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -93,12 +93,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Rodrigues', 'password' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Rodrigues', 'password' => '123456']);
 
-        $this->seeJson([
-            "password" => ["The password confirmation does not match."]
+        $response->assertJsonFragment([
+            "password" => ["Campos password e password_confirmation estão diferentes."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -113,12 +113,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Rodrigues', 'password' => '123', 'password_confirmation' => '123']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Rodrigues', 'password' => '123', 'password_confirmation' => '123']);
 
-        $this->seeJson([
-            "password" => ["The password must be at least 6 characters."]
+        $response->assertJsonFragment([
+            "password" => ["Mínimo 6 caracteres."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -133,12 +133,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123457']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123457']);
 
-        $this->seeJson([
-            "password" => ["The password confirmation does not match."]
+        $response->assertJsonFragment([
+            "password" => ["Campos password e password_confirmation estão diferentes."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -153,12 +153,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Cesar Alves dos Santos Gonzaga Rodrigues Junior', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian@email.com', 'name' => 'Willian Cesar Alves dos Santos Gonzaga Rodrigues Junior', 'password' => '123456', 'password_confirmation' => '123456']);
 
-        $this->seeJson([
-            "name" => ["The name may not be greater than 50 characters."]
+        $response->assertJsonFragment([
+            "name" => ["Máximo 50 caracteres."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -173,12 +173,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian_cesar_alves_dos_santos_gonzaga_rodrigues_junior@email.com', 'name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian_cesar_alves_dos_santos_gonzaga_rodrigues_junior@email.com', 'name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123456']);
 
-        $this->seeJson([
-            "email" => ["The email may not be greater than 50 characters."]
+        $response->assertJsonFragment([
+            "email" => ["Máximo 50 caracteres."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -193,12 +193,12 @@ class CreateUserTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['email' => 'willian_email.com', 'name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['email' => 'willian_email.com', 'name' => 'Willian Rodrigues', 'password' => '123456', 'password_confirmation' => '123456']);
 
-        $this->seeJson([
-            "email" => ["The email must be a valid email address."]
+        $response->assertJsonFragment([
+            "email" => ["Email inválido."]
         ]);
-        $this->assertResponseStatus(422);
+        $response->assertStatus(422);
     }
 
     /**
@@ -212,12 +212,12 @@ class CreateUserTest extends TestCase
         $user = factory(User::class)->create();
         //acting as first user created
         $this->actingAs($user);
-        $this->json('POST', '/users/add', ['name'=> 'Willian Rodrigues', 'email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
+        $response = $this->json('POST', '/api/users/add', ['name'=> 'Willian Rodrigues', 'email' => 'willian@email.com', 'password' => '123456', 'password_confirmation' => '123456']);
 
-        $this->seeJson([
-            "message" => 'User created',
+        $response->assertJsonFragment([
+            "message" => 'Usuário criado.',
             "name" => "Willian Rodrigues"
         ]);
-        $this->assertResponseStatus(200);
+        $response->assertStatus(200);
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
+namespace Tests\Unit\Auth;
+
 use App\Models\User;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use Tests\TestCase;
 
 class LogoutTest extends TestCase
@@ -15,9 +16,11 @@ class LogoutTest extends TestCase
     {
         //Creates 1 ramdoms user
         $users = factory(User::class)->create();
+
         //make request
-        $this->json('GET', '/logout');
+        $response = $this->json('GET', '/api/logout');
+
         //checks if access is unauthorized
-        $this->assertResponseStatus(401);
+        $response->assertStatus(401);
     }
 }

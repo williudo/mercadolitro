@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\Unit\Auth;
+
 use App\Models\User;
 use Tests\TestCase;
 
@@ -14,15 +16,13 @@ class LoginTest extends TestCase
     {
         //Creates 1 ramdoms user
         $user = factory(User::class)->create(['email'=> 'willian@email.com']);
-        //Acting as user
         $this->actingAs($user);
+
         //make request
-        $this->json('POST', '/login', ['email'=> 'willian@email.com']);
+        $response = $this->json('POST', '/api/login', ['email'=> 'willian@email.com']);
+
         //check if shows validation errors
-        $this->seeJson([
-            "password" => ["The password field is required."]
-        ]);
-        $this->assertResponseStatus(422);
+        $response->assertJson(["message" => ["password" => ["Informe a senha."]]]);
     }
 
     /**
@@ -34,15 +34,14 @@ class LoginTest extends TestCase
     {
         //Creates 1 ramdoms user
         $user = factory(User::class)->create(['email'=> 'willian@email.com']);
-        //Acting as user
         $this->actingAs($user);
+
         //make request
-        $this->json('POST', '/login', ['password'=> '123456']);
+        $response = $this->json('POST', '/api/login', ['password'=> '123456']);
+
         //check if shows validation errors
-        $this->seeJson([
-            "email" => ["The email field is required."]
-        ]);
-        $this->assertResponseStatus(422);
+        $response->assertJson(["message" => ["email" => ["Informe o email."]]]);
+        $response->assertStatus(422);
     }
 
     /**
@@ -54,15 +53,14 @@ class LoginTest extends TestCase
     {
         //Creates 1 ramdoms user
         $user = factory(User::class)->create(['email'=> 'willian@email.com']);
-        //Acting as user
         $this->actingAs($user);
+
         //make request
-        $this->json('POST', '/login', ['email'=> 'willian@email.com', 'password' => '123456']);
+        $response = $this->json('POST', '/api/login', ['email'=> 'willian@email.com', 'password'=> '123456']);
+
         //check if shows validation errors
-        $this->seeJson([
-            "error" => "Invalid user credentials"
-        ]);
-        $this->assertResponseStatus(401);
+        $response->assertJson(["error" => "Credenciais inválidas."]);
+        $response->assertStatus(401);
     }
 
     /**
@@ -77,12 +75,12 @@ class LoginTest extends TestCase
         //Acting as user
         $this->actingAs($user);
         //make request
-        $this->json('POST', '/login', ['email'=> 'willian@email.com', 'password' => '1qaz2wsx']);
+        $response = $this->json('POST', '/api/login', ['email'=> 'willian@email.com', 'password' => '1qaz2wsx']);
         //check if shows jwt token
-        $this->seeJson([
-            "token_type" => "bearer",
+        $response->assertJson([
+            "token_type" => "bearer"
         ]);
-        $this->seeJsonStructure(['access_token']);
-        $this->assertResponseStatus(200);
+        $response->assertJsonStructure(['access_token']);
+        $response->assertStatus(200);
     }
 }

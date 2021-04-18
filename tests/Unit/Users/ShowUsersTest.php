@@ -16,28 +16,9 @@ class ShowUsersTest extends TestCase
         //Creates 10 ramdoms users
         $users = factory(User::class)->create();
         //make request
-        $this->json('GET', '/users');
+        $response = $this->json('GET', '/api/users');
         //checks if access is unauthorized
-        $this->assertResponseStatus(401);
-    }
-
-    /**
-     * Test listing 10 users.
-     * Expects return a json model pagination with 10 users
-     * @return void
-     */
-    public function testList10()
-    {
-        //Creates 10 ramdoms users
-        $users = factory(User::class, 10)->create();
-        //acting as first user created
-        $this->actingAs($users[0]);
-        //make request
-        $this->json('GET', '/users');
-        //checks if created 10 users
-        $this->seeJson([
-            'total' => 10
-        ]);
+        $response->assertStatus(401);
     }
 
     /**
@@ -52,11 +33,10 @@ class ShowUsersTest extends TestCase
         //acting as first user created
         $this->actingAs($users[0]);
         //make request
-        $this->json('GET', '/users?items_per_page=5');
+        $response = $this->json('GET', '/api/users?items_per_page=5');
         //checks if created 5 users
-        $this->seeJson([
-            'to' => 5,
-            'total' => 10
+        $response->assertJsonFragment([
+            'to' => 5
         ]);
     }
 
@@ -72,9 +52,9 @@ class ShowUsersTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/users?name=Cesar');
+        $response = $this->json('GET', '/api/users?name=Cesar');
         //checks if found user
-        $this->seeJson([
+        $response->assertJsonFragment([
             'total' => 0,
             'data' => []
         ]);
@@ -92,9 +72,9 @@ class ShowUsersTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/users?name=Rodrigues');
+        $response = $this->json('GET', '/api/users?name=Rodrigues');
         //checks if found user
-        $this->seeJson([
+        $response->assertJsonFragment([
             'total' => 1,
             'name' => 'Willian Rodrigues'
         ]);
@@ -112,9 +92,9 @@ class ShowUsersTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/users?email=rodrigues@gmail.com');
+        $response = $this->json('GET', '/api/users?email=rodrigues@gmail.com');
         //checks if found user
-        $this->seeJson([
+        $response->assertJsonFragment([
             'total' => 0,
             'data' => []
         ]);
@@ -132,9 +112,9 @@ class ShowUsersTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/users?email=willian');
+        $response = $this->json('GET', '/api/users?email=willian');
         //checks if found user
-        $this->seeJson([
+        $response->assertJsonFragment([
             'total' => 1,
             'email' => 'willian@email.com'
         ]);

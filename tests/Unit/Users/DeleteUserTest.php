@@ -15,9 +15,9 @@ class DeleteUserTest extends TestCase
         //Creates 1 ramdoms user
         $users = factory(User::class)->create();
         //make request
-        $this->json('GET', '/users/delete/'.$users->id);
+        $response = $this->json('DELETE', '/api/users/delete/'.$users->id);
         //checks if access is unauthorized
-        $this->assertResponseStatus(401);
+        $response->assertStatus(401);
     }
 
     /**
@@ -32,9 +32,9 @@ class DeleteUserTest extends TestCase
         //Acting as user
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/users/delete/');
+        $response = $this->json('DELETE', '/api/users/delete/');
         //checks if access is not found
-        $this->assertResponseStatus(404);
+        $response->assertStatus(404);
     }
 
     /**
@@ -49,9 +49,9 @@ class DeleteUserTest extends TestCase
         //Acting as user
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/users/delete/4848446');
+        $response = $this->json('DELETE', '/api/users/delete/4848446');
         //checks if access is not found
-        $this->assertResponseStatus(404);
+        $response->assertStatus(404);
     }
 
     /**
@@ -66,9 +66,9 @@ class DeleteUserTest extends TestCase
         //Acting as user
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/users/delete/'.$user->id);
+        $response = $this->json('DELETE', '/api/users/delete/'.$user->id);
         //checks if deleted
-        $this->assertResponseStatus(200);
-        $this->seeJson(['message' => 'User deleted']);
+        $response->assertStatus(200);
+        $response->assertJsonFragment(['message' => 'Usuário Deletado.']);
     }
 }

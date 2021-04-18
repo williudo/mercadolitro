@@ -1,7 +1,8 @@
 <?php
 
+namespace Tests\Unit\Products;
+
 use App\Models\User;
-use App\Models\Products;
 use Tests\TestCase;
 
 class CreateProductTest extends TestCase
@@ -15,8 +16,8 @@ class CreateProductTest extends TestCase
     {
         //make request
         $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
-        //checks if access is unauthorized
 
+        //checks if access is unauthorized
         $response->assertStatus(401);
     }
 
@@ -32,12 +33,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/users/add', ['description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
+        $response = $this->json('POST', '/api/products/add', ['description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
 
-        $this->seeJson([
-            "name" => ["The name field is required."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["name" => ["Informe o nome."]]]);
+        $response->assertStatus(422);
     }
     /**
      * Test try creates a product without pass description.
@@ -51,12 +51,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'quantity' => '20', 'price' => '19584.59', 'color' => 'grey']);
 
-        $this->seeJson([
-            "description" => ["The description field is required."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["description" => ["Informe a descrição."]]]);
+        $response->assertStatus(422);
     }
     /**
      * Test try creates a product without pass quantity.
@@ -70,12 +69,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'price' => '19584.59', 'color' => 'grey']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'price' => '19584.59', 'color' => 'grey']);
 
-        $this->seeJson([
-            "quantity" => ["The quantity field is required."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["quantity" => ["Informe a quantidade."]]]);
+        $response->assertStatus(422);
     }
     /**
      * Test try creates a product without pass price.
@@ -89,31 +87,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'color' => 'grey']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'color' => 'grey']);
 
-        $this->seeJson([
-            "price" => ["The price field is required."]
-        ]);
-        $this->assertResponseStatus(422);
-    }
-    /**
-     * Test try creates a product with wrong color.
-     * Expects return a json error validation
-     * @return void
-     */
-    public function testTryCreateWithWrongColor()
-    {
-        //Create a ramdom user
-        $user = factory(User::class)->create();
-        //acting as first user created
-        $this->actingAs($user);
-
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => '25']);
-
-        $this->seeJson([
-            "color" => ["The selected color is invalid."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["price" => ["Informe o preço."]]]);
+        $response->assertStatus(422);
     }
 
     /**
@@ -128,12 +106,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => 'qwef', 'color' => 'red']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => 'qwef', 'color' => 'red']);
 
-        $this->seeJson([
-            "price" => ["The price must be a number."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["price" => ["Preço com formato inválido."]]]);
+        $response->assertStatus(422);
     }
 
     /**
@@ -148,12 +125,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '-1', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '-1', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "quantity" => ["The quantity must be at least 0."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["quantity" => ["Números negativos não são permitidos."]]]);
+        $response->assertStatus(422);
     }
 
     /**
@@ -168,12 +144,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix Tecpix Tecpix Tecpix Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix Tecpix Tecpix Tecpix Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "name" => ["The name may not be greater than 30 characters."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["name" => ["Máximo 30 caracteres."]]]);
+        $response->assertStatus(422);
     }
 
     /**
@@ -188,12 +163,11 @@ class CreateProductTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
 
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'description' => '10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'description' => '10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1 10 e 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "description" => ["The description may not be greater than 50 characters."]
-        ]);
-        $this->assertResponseStatus(422);
+        //check if shows validation errors
+        $response->assertJson(["message" => ["description" => ["Máximo 50 caracteres."]]]);
+        $response->assertStatus(422);
     }
 
     /**
@@ -207,12 +181,10 @@ class CreateProductTest extends TestCase
         $user = factory(User::class)->create();
         //acting as first user created
         $this->actingAs($user);
-        $this->json('POST', '/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
+        $response = $this->json('POST', '/api/products/add', ['name'=> 'Tecpix', 'description' => '10 em 1', 'quantity' => '20', 'price' => '19584.59', 'color' => 'red']);
 
-        $this->seeJson([
-            "message" => 'Product created',
-            "name" => "Tecpix"
-        ]);
-        $this->assertResponseStatus(200);
+        //check if shows validation errors
+        $response->assertJson(["message" => 'Produto Criado']);
+        $response->assertStatus(200);
     }
 }

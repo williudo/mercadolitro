@@ -1,7 +1,10 @@
 <?php
 
+namespace Tests\Unit\Products;
+
 use App\Models\User;
 use App\Models\Products;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class ShowProductsTest extends TestCase
@@ -16,49 +19,10 @@ class ShowProductsTest extends TestCase
         //Creates ramdoms products
         $products = factory(Products::class)->create();
         //make request
-        $this->json('GET', '/products');
-        //checks if access is unauthorized
-        $this->assertResponseStatus(401);
-    }
-    /**
-     * Test list products, but not having a database records.
-     * Expects return a json model pagination without any product
-     * @return void
-     */
-    public function testListNone()
-    {
-        //Create a ramdom user
-        $user = factory(User::class)->create();
-        //acting as first user created
-        $this->actingAs($user);
-        //make request
-        $this->json('GET', '/products');
-        //checks if not have products
-        $this->seeJson([
-            'total' => 0,
-            'data' => []
-        ]);
-    }
+        $response = $this->json('GET', '/api/products');
 
-    /**
-     * Test listing 10 products.
-     * Expects return a json model pagination with 10 products
-     * @return void
-     */
-    public function testList10()
-    {
-        //Create a ramdom user
-        $user = factory(User::class)->create();
-        //Creates ramdoms products
-        $products = factory(Products::class, 10)->create();
-        //acting as first user created
-        $this->actingAs($user);
-        //make request
-        $this->json('GET', '/products');
-        //checks if created 10 products
-        $this->seeJson([
-            'total' => 10
-        ]);
+        //checks if access is unauthorized
+        $response->assertStatus(401);
     }
 
     /**
@@ -75,12 +39,10 @@ class ShowProductsTest extends TestCase
         //acting as first user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/products?items_per_page=5');
+        $response = $this->json('GET', '/api/products?items_per_page=5');
         //checks if created 5 products
-        $this->seeJson([
-            'to' => 5,
-            'total' => 10
-        ]);
+        $response->assertJsonFragment(['to' => 5]);
+        $response->assertStatus(200);
     }
 
     /**
@@ -97,12 +59,11 @@ class ShowProductsTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/products?name=Tecpix');
+        $response = $this->json('GET', '/api/products?name=Tecpix');
+
         //checks if not found product
-        $this->seeJson([
-            'total' => 0,
-            'data' => []
-        ]);
+        $response->assertJsonFragment(['to' => null]);
+        $response->assertStatus(200);
     }
 
     /**
@@ -119,12 +80,13 @@ class ShowProductsTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/products?name=hinode');
+        $response = $this->json('GET', '/api/products?name=hinode');
         //checks if found product
-        $this->seeJson([
+        $response->assertJsonFragment([
             'total' => 1,
             'name' => 'Perfume Hinode'
         ]);
+        $response->assertStatus(200);
     }
 
     /**
@@ -141,12 +103,11 @@ class ShowProductsTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/products?description=perfume');
-        //checks if found product
-        $this->seeJson([
-            'total' => 0,
-            'data' => []
-        ]);
+        $response = $this->json('GET', '/api/products?description=perfume');
+
+        //checks if not found product
+        $response->assertJsonFragment(['to' => null]);
+        $response->assertStatus(200);
     }
 
     /**
@@ -163,13 +124,15 @@ class ShowProductsTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/products?description=10 em 1');
+        $response = $this->json('GET', '/api/products?description=10 em 1');
+
         //checks if found product
-        $this->seeJson([
+        $response->assertJsonFragment([
             'total' => 1,
             'name' => 'Tecpix',
             'description' => 'A melhor câmera do mercado, ela é 10 em 1'
         ]);
+        $response->assertStatus(200);
     }
 
     /**
@@ -186,12 +149,15 @@ class ShowProductsTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/products?color=Red');
-        //checks if found product
-        $this->seeJson([
+        $response = $this->json('GET', '/api/products?color=Red');
+
+        //checks if not found product
+        $response->assertJsonFragment([
             'total' => 0,
             'data' => []
         ]);
+
+        $response->assertStatus(200);
     }
 
     /**
@@ -208,12 +174,15 @@ class ShowProductsTest extends TestCase
         //acting as user created
         $this->actingAs($user);
         //make request
-        $this->json('GET', '/products?color=Grey');
+        $response = $this->json('GET', '/api/products?color=Grey');
+
         //checks if found product
-        $this->seeJson([
+        $response->assertJsonFragment([
             'total' => 1,
             'name' => 'Tecpix',
             'color' => 'grey'
         ]);
+
+        $response->assertStatus(200);
     }
 }
