@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="250" src="https://github.com/williudo/mercadolitro/blob/master/docs/MercadoLitroPequeno.png?raw=true">
+  <img src="https://github.com/williudo/mercadolitro/blob/master/docs/MercadoLitroPequeno.png?raw=true">
 </p>
 
 # MercadoLitro API
@@ -107,9 +107,12 @@ Dado que já sabe o container_id do php-fpm:
 docker exec -it <container_id> /bin/bash
 php artisan test
 ```
-#### Teste executados e coverage
-![tests](https://github.com/williudo/mercadolitro/blob/master/docs/tests.png?raw=true)   
-![coverage](https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true)
+
+## Teste executados e coverage
+![tests](https://github.com/williudo/mercadolitro/blob/master/docs/tests.png?raw=true)
+<p align="center">
+  <img src="https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true">
+</p>
 
 #### Debugs
 
@@ -118,5 +121,7 @@ Para acessar o Telescope a url é:
 
 [http://mercadolitro.local/telescope](http://mercadolitro.local/telescope)   
 
-Demonstração: 
-![coverage](https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true)
+  
+<p align="center">
+  <img src="https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true">
+</p>
