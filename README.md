@@ -110,3 +110,12 @@ php artisan test
 #### Teste executados e coverage
 ![tests](https://github.com/williudo/mercadolitro/blob/master/docs/tests.png?raw=true)   
 ![coverage](https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true)
+
+#### Debugs
+
+Está sendo utilizado localmente neste projeto, o Telescope do Laravel, para que possa debugar melhor as requisições, queries, cache, fila e mais.  
+Para acessar o Telescope a url é:   
+
+[http://mercadolitro.local/telescope](http://mercadolitro.local/telescope)   
+
+Demonstração: 
