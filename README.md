@@ -1,7 +1,7 @@
 # MercadoLitro API
 
 Neste repositório foi feito uma API em Laravel que simula um marketplace de bebidas.  
-Inspirada no Mercado Livre, mas claro, muito menor, as rotas está separado em 4 pastas:
+Inspirada no Mercado Livre, mas claro, muito menor.
 
 
 ## Índice
