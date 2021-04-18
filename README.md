@@ -123,5 +123,5 @@ Para acessar o Telescope a url é:
 
   
 <p align="center">
-  <img src="https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true">
+  <img src="https://github.com/williudo/mercadolitro/blob/master/docs/telescope.png?raw=true">
 </p>
