@@ -108,8 +108,5 @@ docker exec -it <container_id> /bin/bash
 php artisan test
 ```
 #### Teste executados e coverage
-Teste:
 ![tests](https://github.com/williudo/mercadolitro/blob/master/docs/tests.png?raw=true)   
-
-Coverage:
 ![coverage](https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true)
