@@ -71,7 +71,7 @@ class OrdersController extends Controller
             return response()->json(['error' => 'O pedido não pode ser enviado pois foi cancelado'], 400);
 
         if ($order->status == "shipped")
-            return response()->json(['error' => 'O pedido não pode ser marcado enviado, pois já foi enviado'], 400);
+            return response()->json(['error' => 'O pedido não pode ser marcado enviado, pois ja foi enviado'], 400);
 
         $order->status = "shipped";
         $order->tracking_number = $request->tracking_number;

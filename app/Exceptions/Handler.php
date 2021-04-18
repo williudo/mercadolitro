@@ -75,16 +75,12 @@ class Handler extends ExceptionHandler
             $message = 'Não encontrado.';
         }
 
-        if ($request->expectsJson()) {
-            $response_data = ['error' => $message];
-            if (method_exists($exception, 'errors')) {
-                $response_data['message'] = $exception->errors();
-            }
 
-            return response()->json($response_data, $code);
-
+        $response_data = ['error' => $message];
+        if (method_exists($exception, 'errors')) {
+            $response_data['message'] = $exception->errors();
         }
 
-        return parent::render($request, $exception);
+        return response()->json($response_data, $code);
     }
 }

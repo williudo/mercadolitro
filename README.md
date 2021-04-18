@@ -1,61 +1,62 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+# MercadoLitro API
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
+Neste repositório foi feito uma API em Laravel que simula um marketplace.  
+Inspirada no Mercado Livre, mas claro, muito menor, as rotas está separado em 4 pastas:
 
-## About Laravel
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Requisitos
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Para rodar este projeto, é necessário somente duas coisas:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+1. `Internet` :laughing:
+2. [`Docker instalado`](https://www.docker.com/products/docker-desktop)
 
-## Learning Laravel
+## Composer
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+Baixe as dependências do laravel `/frontend` e lumen `/backend-challenge` executando em cada uma das pastas o comando no terminal: `composer install` 
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Configurações MYSQL
 
-## Laravel Sponsors
+Para rodar a aplicação e os testes, será necessário criar dois banco de dados.
+Pode escolher o nome que preferir, basta acessar a pasta [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge) e colocar as configurações de conexão do banco principal em `.env`, e colocar as configurações de conexão do banco de testes em `.env.testing`<br>
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+#### Migrations:
+Após criado os bancos de dados, acesse a pasta do [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge) e rode o comando no terminal parar criar as tabelas: `php artisan migrate` 
 
-### Premium Partners
+#### Factories:
+Ainda na pasta do backend [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge), precisamos popular a tabela de usuários rodando o seguinte comando no terminal: `php artisan db:seed`.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[OP.GG](https://op.gg)**
+Será criado 5 usuários aleatórios, na tabela `users`, todos com a senha `1qaz2wsx`. Acesse o banco de dados para utilizar algum dos e-mails para login
 
-## Contributing
+## Tests
+Se você tem instalado o phpunit e o tem cadastrado em suas variáveis de ambiente, basta acessar a pasta [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge) e rodar o comando: `phpunit`
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+![tests](https://user-images.githubusercontent.com/14855959/73621012-307c5900-4613-11ea-9dc4-ab33ca44ee7b.png)
 
-## Code of Conduct
+## Rodando os projetos
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Se você utilizar o apache, coloque no diretório de sua preferência e altere a variavél de ambiente `APP_URL` no arquivo `.env` dos dois projetos
 
-## Security Vulnerabilities
+## API Endpoints
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+- Autenticação:
+  - login: `POST` `/login`
+  - logout: `GET` `/logout`
+  - refresh: `PUT` `/refresh`
+  
+- Usuários:
+  - listar usuários: `GET` `/users`
+  - Criar usuário: `POST` `/users/add`
+  - Editar usuário: `POST` `/users/edit/{id}`
+  - Excluir usuário (soft delete): `GET` `/users/delete/{id}` 
+  
+- Produtos:
+  - listar produtos: `GET` `/products`
+  - Criar produto: `POST` `/products/add`
+  - Editar produto: `POST` `/products/edit/{id}`
+  - Excluir produto (soft delete): `GET` `/products/delete/{id}`
 
-## License
+## Dúvidas e sugestões
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+- Email: [willian.crodrigues90@gmail.com](mailto:willian.crodrigues90@gmail.com) 
+- Github: [github.com/williudo](https://github.com/williudo/)

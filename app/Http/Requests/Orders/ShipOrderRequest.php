@@ -27,7 +27,7 @@ class ShipOrderRequest extends FormRequest
      */
     public function messages()
     {
-        $this->messages['tracking_number.required'] = 'Informe o código rastreio.';
+        $this->messages['tracking_number.required'] = 'Informe o codigo rastreio.';
         $this->messages['tracking_number.string'] = 'Formato do código rastreio inválido.';
         $this->messages['tracking_number.min'] = 'Mínimo 5 caracteres.';
         $this->messages['tracking_number.max'] = 'Máximo 20 caracteres.';

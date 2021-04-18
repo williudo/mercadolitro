@@ -8,6 +8,7 @@ services:
     links:
       - fpm
       - mysql
+      - redis
     volumes:
       - ./:/var/www/laravel
       - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/laravel.conf
