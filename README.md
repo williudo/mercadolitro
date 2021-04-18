@@ -46,19 +46,14 @@ docker-compose up -d --build
 Foi criado as migrations para versionamento das tabelas do banco de dados, e seeders para popular o banco automaticamente.  
 Com isso, será possível testar todos os endepoints.   
 
-No windows, acessar o terminal do docker via aplicativo e rodar:
+Rodar na sequência os comandos abaixo:
 ```
-php artisan migrate
-php artisan db:seed
+docker-compose exec fpm composer install
+docker-compose exec fpm php artisan migrate
+docker-compose exec fpm php artisan db:seed
 
 ```
-No linux é necessário primeiro, acessar o bash do container:
-```
-Dado que já sabe o container_id do php-fpm:
-docker exec -it <container_id> /bin/bash
-php artisan migrate
-php artisan db:seed
-```
+
 ## <a name="doc-config"></a> Documentação da API
 
 Após seguir todos os passos acima, a aplicação já estará disponível em: [http://mercadolitro.local](http://mercadolitro.local)  
@@ -95,18 +90,10 @@ Resumo:
 ## <a name="tests-config"></a>Testes e Debugs
 
 Para rodar o teste, e também gerar o coverage do php unit, basta executar o comando:  
+```
+docker-compose exec fpm php artisan test
+```
 
-No windows, acessar o terminal do docker via aplicativo e rodar:
-```
-php artisan test
-```
-No linux é necessário primeiro, acessar o bash do container:
-```
-Dado que já sabe o container_id do php-fpm:
-
-docker exec -it <container_id> /bin/bash
-php artisan test
-```
 
 ## Teste executados e coverage
 ![tests](https://github.com/williudo/mercadolitro/blob/master/docs/tests.png?raw=true)
