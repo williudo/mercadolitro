@@ -119,3 +119,4 @@ Para acessar o Telescope a url é:
 [http://mercadolitro.local/telescope](http://mercadolitro.local/telescope)   
 
 Demonstração: 
+![coverage](https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true)
