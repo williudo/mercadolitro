@@ -37,7 +37,7 @@ Com o docker instalado, rode o commando abaixo na raiz do projeto, mas iniciar o
 docker-compose up -d --build
 ```
 
-#### Migrations e Seeders:
+## Migrations e Seeders:
 
 Foi criado as migrations para versionamento das tabelas do banco de dados, e seeders para popular o banco automaticamente.  
 Com isso, será possível testar todos os endepoints.   
