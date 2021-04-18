@@ -64,7 +64,7 @@ php artisan db:seed
 Após seguir todos os passos acima, a aplicação já estará disponível em: [http://mercadolitro.local](http://mercadolitro.local)  
 As rotas que exigem autenticação, é necessário passar no header um access_token no padrão JWT. O mesmo o usuário obtém, logando em `/api/login`.
 
-Todos os usuários que foram criados pelo comando de seed executado no tópico anterior, possuem a senha: "1qaz2wsx".  
+Todos os usuários que foram criados pelo comando de seed executado no tópico anterior, possuem a senha: <b>"1qaz2wsx"<b>.  
 Abaixo consta um resumo dos endpoints desta API, mas para melhor testar, criei uma collection do POSTMAN, que está disponível neste link: 
 
 [https://documenter.getpostman.com/view/10597917/TzJsexjq](https://documenter.getpostman.com/view/10597917/TzJsexjq) 
