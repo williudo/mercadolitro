@@ -1,62 +1,111 @@
 # MercadoLitro API
 
-Neste repositório foi feito uma API em Laravel que simula um marketplace.  
+Neste repositório foi feito uma API em Laravel que simula um marketplace de bebidas.  
 Inspirada no Mercado Livre, mas claro, muito menor, as rotas está separado em 4 pastas:
 
 
-## Requisitos
+## Índice
 
-Para rodar este projeto, é necessário somente duas coisas:
+Para testar este projeto, basta seguir os tópicos a seguir:
 
-1. `Internet` :laughing:
-2. [`Docker instalado`](https://www.docker.com/products/docker-desktop)
+1. [`Configurar o arquivo hosts do sistema operacional`](#hosts-config)
+2. [`Docker`](https://www.docker.com/products/docker-desktop)
+2. [`Migrations e Seeders`](https://www.docker.com/products/docker-desktop)
+3. [`Documentação da API`](https://www.docker.com/products/docker-desktop)
+4. [`Testes e Debugs`](https://www.docker.com/products/docker-desktop)
 
-## Composer
 
-Baixe as dependências do laravel `/frontend` e lumen `/backend-challenge` executando em cada uma das pastas o comando no terminal: `composer install` 
+## <a name="hosts-config"></a> Configurar o arquivo hosts do sistema operacional
 
-## Configurações MYSQL
+A url local utilizada para este projeto é http://mercadolitro.local  
+Será necessário configurar no arquivos hosts do sistema operacional, para ser acessível.  
+Caso não saiba como fazer, basta acessar esse link:  
 
-Para rodar a aplicação e os testes, será necessário criar dois banco de dados.
-Pode escolher o nome que preferir, basta acessar a pasta [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge) e colocar as configurações de conexão do banco principal em `.env`, e colocar as configurações de conexão do banco de testes em `.env.testing`<br>
+[`https://suporte.hostgator.com.br/hc/pt-br/articles/115000391994-Como-funciona-o-arquivo-hosts-`](https://suporte.hostgator.com.br/hc/pt-br/articles/115000391994-Como-funciona-o-arquivo-hosts-)
 
-#### Migrations:
-Após criado os bancos de dados, acesse a pasta do [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge) e rode o comando no terminal parar criar as tabelas: `php artisan migrate` 
+## Docker
 
-#### Factories:
-Ainda na pasta do backend [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge), precisamos popular a tabela de usuários rodando o seguinte comando no terminal: `php artisan db:seed`.
+Nesta aplicação, há 4 containers, sendo eles:
 
-Será criado 5 usuários aleatórios, na tabela `users`, todos com a senha `1qaz2wsx`. Acesse o banco de dados para utilizar algum dos e-mails para login
+1. Servidor Nginx
+2. PHP-FPM v7.4+
+3. MySql v5.7
+4. Redis (utilizado no laravel em filas e cache)
 
-## Tests
-Se você tem instalado o phpunit e o tem cadastrado em suas variáveis de ambiente, basta acessar a pasta [`/backend-laravel`](https://github.com/williudo/laravel-backend-frontend/tree/master/backend-challenge) e rodar o comando: `phpunit`
+Com o docker instalado, rode o commando abaixo na raiz do projeto, mas iniciar os containers:  
+```
+docker-compose up -d --build
+```
 
-![tests](https://user-images.githubusercontent.com/14855959/73621012-307c5900-4613-11ea-9dc4-ab33ca44ee7b.png)
+#### Migrations e Seeders:
 
-## Rodando os projetos
+Foi criado as migrations para versionamento das tabelas do banco de dados, e seeders para popular o banco automaticamente.  
+Com isso, será possível testar todos os endepoints.   
 
-Se você utilizar o apache, coloque no diretório de sua preferência e altere a variavél de ambiente `APP_URL` no arquivo `.env` dos dois projetos
+No windows, acessar o terminal do docker via aplicativo e rodar:
+```
+php artisan migrate
+php artisan db:seed
 
-## API Endpoints
+```
+No linux é necessário primeiro, acessar o bash do container:
+```
+Dado que já sabe o container_id do php-fpm:
+docker exec -it <container_id> /bin/bash
+php artisan migrate
+php artisan db:seed
+```
+## Documentação da API
 
+Após seguir todos os passos acima, a aplicação já estará disponível em: [http://mercadolitro.local](http://mercadolitro.local)  
+As rotas que exigem autenticação, é necessário passar no header um access_token no padrão JWT. O mesmo o usuário obtém, logando em `/api/login`.
+
+Todos os usuários que foram criados pelo comando de seed executado no tópico anterior, possuem a senha: "1qaz2wsx".  
+Abaixo consta um resumo dos endpoints desta API, mas para melhor testar, criei uma collection do POSTMAN, que está disponível neste link: 
+
+[https://documenter.getpostman.com/view/10597917/TzJsexjq](https://documenter.getpostman.com/view/10597917/TzJsexjq) 
+
+Resumo:
 - Autenticação:
-  - login: `POST` `/login`
-  - logout: `GET` `/logout`
-  - refresh: `PUT` `/refresh`
+  - login: `POST` `/api/login`
+  - logout: `GET` `/api/logout`
+  - refresh: `PUT` `/api/refresh`
   
 - Usuários:
-  - listar usuários: `GET` `/users`
-  - Criar usuário: `POST` `/users/add`
-  - Editar usuário: `POST` `/users/edit/{id}`
-  - Excluir usuário (soft delete): `GET` `/users/delete/{id}` 
+  - listar usuários: `GET` `/api/users`
+  - criar usuário: `POST` `/api/users/add`
+  - editar usuário: `PUT` `/api/users/edit/{id}`
+  - excluir usuário (soft delete): `DELETE` `/api/users/delete/{id}` 
   
 - Produtos:
-  - listar produtos: `GET` `/products`
-  - Criar produto: `POST` `/products/add`
-  - Editar produto: `POST` `/products/edit/{id}`
-  - Excluir produto (soft delete): `GET` `/products/delete/{id}`
+  - listar produtos: `GET` `/api/products`
+  - criar produto: `POST` `/api/products/add`
+  - editar produto: `POST` `/api/products/edit/{id}`
+  - excluir produto (soft delete): `DELETE` `/api/products/delete/{id}`
+  
+- Pedidos:
+  - listar pedidos: `GET` `/api/orders`
+  - enviar pedido: `PUT` `/api/orders/ship/{id}`
+  - cancelar pedido (soft delete): `DELETE` `/api/orders/cancel/{id}`
 
-## Dúvidas e sugestões
+## Testes e Debugs
 
-- Email: [willian.crodrigues90@gmail.com](mailto:willian.crodrigues90@gmail.com) 
-- Github: [github.com/williudo](https://github.com/williudo/)
+Para rodar o teste, e também gerar o coverage do php unit, basta executar o comando:  
+
+No windows, acessar o terminal do docker via aplicativo e rodar:
+```
+php artisan test
+```
+No linux é necessário primeiro, acessar o bash do container:
+```
+Dado que já sabe o container_id do php-fpm:
+
+docker exec -it <container_id> /bin/bash
+php artisan test
+```
+#### Teste executados e coverage
+Teste:
+![tests](https://user-images.githubusercontent.com/14855959/73621012-307c5900-4613-11ea-9dc4-ab33ca44ee7b.png)   
+
+Coverage:
+![coverage](https://user-images.githubusercontent.com/14855959/73621012-307c5900-4613-11ea-9dc4-ab33ca44ee7b.png)
