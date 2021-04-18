@@ -105,7 +105,7 @@ php artisan test
 ```
 #### Teste executados e coverage
 Teste:
-![tests](https://user-images.githubusercontent.com/14855959/73621012-307c5900-4613-11ea-9dc4-ab33ca44ee7b.png)   
+![tests](https://github.com/williudo/mercadolitro/blob/master/docs/tests.png?raw=true)   
 
 Coverage:
 ![coverage](https://github.com/williudo/mercadolitro/blob/master/docs/coverage_phpunit.png?raw=true)
