@@ -36,7 +36,7 @@ Nesta aplicação, há 4 containers, sendo eles:
 3. MySql v5.7
 4. Redis (utilizado no laravel em filas e cache)
 
-Com o docker instalado, rode o commando abaixo na raiz do projeto, mas iniciar os containers:  
+Com o docker instalado, rode o commando abaixo na raiz do projeto, para iniciar os containers:  
 ```
 docker-compose up -d --build
 ```
